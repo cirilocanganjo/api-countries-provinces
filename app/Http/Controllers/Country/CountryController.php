@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class CountryController extends Controller
 {
-    public $country,$countries;
+    public $status,$country,$countries;
     public function getCountries (Request $request) 
     {
         try {
@@ -20,7 +20,7 @@ class CountryController extends Controller
            if($this->countries->isNotEmpty()) {
             return response()->json(['data' => $this->countries], 200);
            }else{
-               return response()->json(['message' => 'Nenhum resultado encontrado!'], 404);
+             return response()->json(['message' => 'Nenhum resultado encontrado!'], 404);
             }
 
         } catch (\Throwable $th) {
@@ -89,11 +89,12 @@ class CountryController extends Controller
             'continent_name' => 'required',
             'date_and_time_foundation' => 'required',
         ]);
+         $this->status = $request->input('status');
          $this->country = Country::query()->findOrFail($id);
-            $updatedCountry = $this->country->update($request->all());
+            $updatedCountry = $this->country->update($request->all(), ['status' => $this->status]);
             DB::commit();
             if ($updatedCountry) {
-                return response()->json(['message' => "Registo atualizado com sucesso!"]);
+              return response()->json(['message' => "Registo atualizado com sucesso!"]);
             }
         } catch (\Throwable $th) {
             DB::rollBack();
