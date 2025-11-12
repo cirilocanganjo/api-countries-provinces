@@ -15,8 +15,8 @@ class ProvinceController extends Controller
 
     public function getProvinces (Request $request) {
         try {
-            $this->provinces = Province::query()->when($request->searcher, fn ($q , $request)  => 
-            $q->where('name', 'like', "%{$request->searcher}$")
+            $this->provinces = Province::query()->when($request->searcher, fn ($q)  => 
+            $q->where('name', 'like', "%{$request->searcher}%")
             )->get();
 
             if ($this->provinces->isNotEmpty()) {
@@ -31,7 +31,7 @@ class ProvinceController extends Controller
 
     public function getProvinceswithInnerJoin(Request $request) {
         try{
-            $this->provinces = Province::query()->when($request->searcher, fn ($q , $request)  => 
+            $this->provinces = Province::query()->when($request->searcher, fn ($q)  => 
             $q->where('name', 'like', "%{$request->searcher}%")
             )->with('country')
             ->get();
