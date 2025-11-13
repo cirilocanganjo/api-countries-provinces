@@ -12,7 +12,6 @@ class ProvinceController extends Controller
 {
     public $status,$province,$provinces;
 
-
     public function getProvinces (Request $request) {
         try {
             $this->provinces = Province::query()->when($request->searcher, fn ($q)  => 
